@@ -4,19 +4,14 @@
 
 #include "net.h"
 #include "sensor.h"
-#include "config.h"
 
 void setup() {
   Serial.begin(115200);
   shiny::sensorInit();
+  shiny::networkInit();
 
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pinMode(SD_CS_PIN, OUTPUT);
-  digitalWrite(SD_CS_PIN, HIGH);
-
-  Ethernet.init(W5100_CS_PIN);
-  shiny::startNetwork();
 }
 
 void loop() {

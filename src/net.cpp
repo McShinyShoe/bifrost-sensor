@@ -1,9 +1,19 @@
 #include <Ethernet.h>
 
+#include "net.h"
 #include "config.h"
 
 namespace shiny {
     static uint8_t MAC[] = BIFROST_MAC;
+
+    void networkInit() {
+        pinMode(SD_CS_PIN, OUTPUT);
+        digitalWrite(SD_CS_PIN, HIGH);
+
+        Ethernet.init(W5100_CS_PIN);
+
+        startNetwork();
+    }
 
     void startNetwork() {
       Serial.println(F("[net] requesting a DHCP lease"));
