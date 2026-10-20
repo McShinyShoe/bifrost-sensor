@@ -1,10 +1,19 @@
 #include <Arduino.h>
 
+#include "net.hpp"
+
 void blink(int ms);
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  pinMode(SD_CS_PIN, OUTPUT);
+  digitalWrite(SD_CS_PIN, HIGH);
+
+  Ethernet.init(W5100_CS_PIN);
+  shiny::startNetwork();
 }
 
 void loop() {
