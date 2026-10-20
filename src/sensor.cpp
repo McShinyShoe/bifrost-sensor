@@ -5,6 +5,7 @@
 
 namespace shiny {
     DHT dht(DHT_PIN, DHT_TYPE);
+    static SensorUpdateCallback sensorUpdateCallback = nullptr;
 
     void sensorInit() {
         dht.begin();
@@ -14,25 +15,24 @@ namespace shiny {
         return dht.readHumidity();
     }
 
-    float temprature() {
+    float temperature() {
         return dht.readTemperature();
     }
 
-    void checkSensorUpdate() {
+    void pollSensor() {
         static float lastHumidity;
-        static float lastTemprature;
+        static float lastTemperature;
         float currentHumidity = humidity();
-        float currentTemprature = temprature();
+        float currentTemperature = temperature();
 
-        if (lastHumidity != currentHumidity || lastTemprature != currentTemprature) {
-            onSensorUpdate(lastHumidity = currentHumidity, lastTemprature = currentTemprature);
+        if (isnan(currentHumidity) || isnan(currentTemperature)) return;
+
+        if (sensorUpdateCallback && (lastHumidity != currentHumidity || lastTemperature != currentTemperature)) {
+            sensorUpdateCallback(lastHumidity = currentHumidity, lastTemperature = currentTemperature);
         }
     }
 
-    void onSensorUpdate(float h, float t) {
-        Serial.print("Humidity: ");
-        Serial.println(shiny::humidity());
-        Serial.print("Temperature: ");
-        Serial.println(shiny::temprature());
+    void setSensorUpdateCallback(SensorUpdateCallback callback) {
+        sensorUpdateCallback = callback;
     }
 }

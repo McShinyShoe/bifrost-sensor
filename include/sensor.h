@@ -3,13 +3,15 @@
 #include <DHT.h>
 
 namespace shiny {
+    using SensorUpdateCallback = void (*)(float humidity, float temperature);
+
     extern DHT dht;
 
     void sensorInit();
 
     float humidity();
-    float temprature();
+    float temperature();
 
-    void checkSensorUpdate();
-    void onSensorUpdate(float h, float t);
+    void pollSensor();
+    void setSensorUpdateCallback(SensorUpdateCallback callback);
 }
