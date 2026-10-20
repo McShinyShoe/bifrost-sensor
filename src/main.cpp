@@ -2,6 +2,7 @@
 #include <DHT.h>
 #include <Ethernet.h>
 
+#include "clock.h"
 #include "layout.h"
 #include "net.h"
 #include "screen.h"
@@ -11,6 +12,7 @@ void handleSensorUpdate(float humidity, float temperature);
 
 void setup() {
   Serial.begin(115200);
+  shiny::clock::init();
   shiny::sensor::init();
   shiny::net::init();
   shiny::screen.init();
@@ -27,6 +29,9 @@ void loop() {
 }
 
 void handleSensorUpdate(float humidity, float temperature) {
+    Serial.print("[");
+    Serial.print(shiny::clock::now().timestamp());
+    Serial.println("]");
     Serial.print("Humidity: ");
     Serial.println(humidity);
     Serial.print("Temperature: ");
