@@ -9,4 +9,7 @@ namespace shiny {
 
     float humidity();
     float temprature();
+
+    void checkSensorUpdate();
+    void onSensorUpdate(float h, float t);
 }

@@ -15,9 +15,5 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
-  Serial.print("Humidity: ");
-  Serial.println(shiny::humidity());
-  Serial.print("Temperature: ");
-  Serial.println(shiny::temprature());
+  shiny::checkSensorUpdate();
 }

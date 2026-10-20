@@ -17,4 +17,22 @@ namespace shiny {
     float temprature() {
         return dht.readTemperature();
     }
+
+    void checkSensorUpdate() {
+        static float lastHumidity;
+        static float lastTemprature;
+        float currentHumidity = humidity();
+        float currentTemprature = temprature();
+
+        if (lastHumidity != currentHumidity || lastTemprature != currentTemprature) {
+            onSensorUpdate(lastHumidity = currentHumidity, lastTemprature = currentTemprature);
+        }
+    }
+
+    void onSensorUpdate(float h, float t) {
+        Serial.print("Humidity: ");
+        Serial.println(shiny::humidity());
+        Serial.print("Temperature: ");
+        Serial.println(shiny::temprature());
+    }
 }
