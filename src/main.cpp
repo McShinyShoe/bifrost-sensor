@@ -1,6 +1,8 @@
 #include <Arduino.h>
+#include <Ethernet.h>
 
-#include "net.hpp"
+#include "net.h"
+#include "config.h"
 
 void blink(int ms);
 
