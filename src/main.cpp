@@ -17,7 +17,7 @@ void setup() {
 void loop() {
   delay(100);
   Serial.print("Humidity: ");
-  Serial.println(shiny::dht.readHumidity());
+  Serial.println(shiny::humidity());
   Serial.print("Temperature: ");
-  Serial.println(shiny::dht.readTemperature());
+  Serial.println(shiny::temprature());
 }

@@ -9,4 +9,12 @@ namespace shiny {
     void sensorInit() {
         dht.begin();
     }
+
+    float humidity() {
+        return dht.readHumidity();
+    }
+
+    float temprature() {
+        return dht.readTemperature();
+    }
 }
