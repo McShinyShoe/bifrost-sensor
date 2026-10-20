@@ -1,6 +1,8 @@
 #pragma once
 
 namespace shiny {
-    void networkInit();
-    void startNetwork();
+    namespace net {
+        void init();
+        void start();
+    }
 }

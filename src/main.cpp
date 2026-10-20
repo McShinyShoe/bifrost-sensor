@@ -9,16 +9,16 @@ void handleSensorUpdate(float humidity, float temperature);
 
 void setup() {
   Serial.begin(115200);
-  shiny::sensorInit();
-  shiny::networkInit();
+  shiny::sensor::init();
+  shiny::net::init();
 
   pinMode(LED_BUILTIN, OUTPUT);
 
-  shiny::setSensorUpdateCallback(handleSensorUpdate);
+  shiny::sensor::setUpdateCallback(handleSensorUpdate);
 }
 
 void loop() {
-  shiny::pollSensor();
+  shiny::sensor::poll();
 }
 
 void handleSensorUpdate(float humidity, float temperature) {

@@ -4,35 +4,37 @@
 #include "config.h"
 
 namespace shiny {
-    DHT dht(DHT_PIN, DHT_TYPE);
-    static SensorUpdateCallback sensorUpdateCallback = nullptr;
+    namespace sensor {
+        DHT dht(DHT_PIN, DHT_TYPE);
+        static UpdateCallback updateCallback = nullptr;
 
-    void sensorInit() {
-        dht.begin();
-    }
-
-    float humidity() {
-        return dht.readHumidity();
-    }
-
-    float temperature() {
-        return dht.readTemperature();
-    }
-
-    void pollSensor() {
-        static float lastHumidity;
-        static float lastTemperature;
-        float currentHumidity = humidity();
-        float currentTemperature = temperature();
-
-        if (isnan(currentHumidity) || isnan(currentTemperature)) return;
-
-        if (sensorUpdateCallback && (lastHumidity != currentHumidity || lastTemperature != currentTemperature)) {
-            sensorUpdateCallback(lastHumidity = currentHumidity, lastTemperature = currentTemperature);
+        void init() {
+            dht.begin();
         }
-    }
 
-    void setSensorUpdateCallback(SensorUpdateCallback callback) {
-        sensorUpdateCallback = callback;
+        float humidity() {
+            return dht.readHumidity();
+        }
+
+        float temperature() {
+            return dht.readTemperature();
+        }
+
+        void poll() {
+            static float lastHumidity;
+            static float lastTemperature;
+            float currentHumidity = humidity();
+            float currentTemperature = temperature();
+
+            if (isnan(currentHumidity) || isnan(currentTemperature)) return;
+
+            if (updateCallback && (lastHumidity != currentHumidity || lastTemperature != currentTemperature)) {
+                updateCallback(lastHumidity = currentHumidity, lastTemperature = currentTemperature);
+            }
+        }
+
+        void setUpdateCallback(UpdateCallback callback) {
+            updateCallback = callback;
+        }
     }
 }
