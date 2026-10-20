@@ -1,13 +1,14 @@
 #include <Arduino.h>
+#include <DHT.h>
 #include <Ethernet.h>
 
 #include "net.h"
+#include "sensor.h"
 #include "config.h"
-
-void blink(int ms);
 
 void setup() {
   Serial.begin(115200);
+  shiny::sensorInit();
 
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -19,13 +20,9 @@ void setup() {
 }
 
 void loop() {
-  blink(500);
-  Serial.println("alive");
-}
-
-void blink(int ms) {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(ms);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(ms);
+  delay(100);
+  Serial.print("Humidity: ");
+  Serial.println(shiny::dht.readHumidity());
+  Serial.print("Temperature: ");
+  Serial.println(shiny::dht.readTemperature());
 }
