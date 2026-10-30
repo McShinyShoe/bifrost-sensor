@@ -14,12 +14,14 @@
 
 #define DHCP_TIMEOUT_MS 15000UL
 
-#define DHT_PIN 6
+#define DHT_GND_PIN 40
+#define DHT_PIN 38
+#define DHT_VCC_PIN 36
 #define DHT_TYPE DHT11
 
 #define LCD_ADDR 0x27
 #define LCD_COLS 16
 #define LCD_ROWS 2
 
-#define IR_IN_PIN 2
-#define IR_OUT_PIN 3
+#define IR_IN_PIN 19
+#define IR_OUT_PIN 18

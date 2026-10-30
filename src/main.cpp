@@ -9,16 +9,17 @@
 #include "screen.h"
 #include "sensor.h"
 #include "ac.h"
+#include "config.h"
 
 void handleSensorUpdate(float humidity, float temperature);
 void handleIRIn(shiny::ac::Signal signal);
 
 void setup() {
     // out of gnd and vcc pins :sadcat:
-    pinMode(7, OUTPUT);
-    digitalWrite(7, LOW);
-    pinMode(5, OUTPUT);
-    digitalWrite(5, HIGH);
+    pinMode(DHT_GND_PIN, OUTPUT);
+    digitalWrite(DHT_GND_PIN, LOW);
+    pinMode(DHT_VCC_PIN, OUTPUT);
+    digitalWrite(DHT_VCC_PIN, HIGH);
     pinMode(LED_BUILTIN, OUTPUT);
 
     Serial.begin(115200);
@@ -29,8 +30,9 @@ void setup() {
     shiny::layout::init();
     shiny::ac::unit.begin();
     shiny::ac::unit.syncPowerState(true); // the ac is already on
-    shiny::ac::remote.begin();
-
+    if (!shiny::ac::remote.begin()) {
+        Serial.println(F("[ac] ir receiver pin has no interrupt, use 2, 3, 18, 19, 20 or 21"));
+    }
 
     shiny::sensor::setUpdateCallback(handleSensorUpdate);
     shiny::ac::remote.onSignal(handleIRIn);
