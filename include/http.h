@@ -7,6 +7,9 @@ namespace shiny {
     namespace http {
         enum : int { kErrConnect = -1, kErrTimeout = -2, kErrMalformed = -3, kErrBadBody = -4 };
 
+        int timedRead(Client& client); // -1 on timeout or connection closed
+        bool readLine(Client& client, char* buf, size_t len); // drops the \r\n, and whatever doesnt fit in buff
+
         class Request {
          public:
           Request(const __FlashStringHelper* method, const char* path);
@@ -19,9 +22,6 @@ namespace shiny {
           int read(); // next body byte
 
          private:
-          int timedRead();
-          bool readLine(char* buf, size_t len);
-
           EthernetClient client_;
           int status_ = kErrConnect;
           long remaining_ = -1;

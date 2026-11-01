@@ -12,6 +12,7 @@
 #include "ac_commands.h"
 #include "ac_queue.h"
 #include "config.h"
+#include "webhook.h"
 
 void handleSensorUpdate(float humidity, float temperature);
 void handleIRIn(shiny::ac::Signal signal);
@@ -29,6 +30,7 @@ void setup() {
     shiny::clock::init();
     shiny::sensor::init();
     shiny::net::init();
+    shiny::webhook::init();
     shiny::screen.init();
     shiny::layout::init();
     shiny::ac::unit.begin();
@@ -48,7 +50,8 @@ void loop() {
     shiny::screen.update();
     shiny::ac::remote.poll();
     handleSerial();
-    shiny::ac::pollQueue();
+    shiny::webhook::poll();
+    // shiny::ac::pollQueue();
     unsigned long mls = millis();
     if(mls - lastRun >= 1000) {
         lastRun = mls;

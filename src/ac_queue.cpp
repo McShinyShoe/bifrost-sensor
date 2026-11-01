@@ -230,5 +230,9 @@ namespace shiny {
 
             if (batch.more) lastPoll = now - AC_POLL_INTERVAL_MS;
         }
+
+        void requestPoll() {
+            lastPoll = millis() - AC_POLL_INTERVAL_MS;
+        }
     }
 }

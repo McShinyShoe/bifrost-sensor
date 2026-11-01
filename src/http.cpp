@@ -41,7 +41,7 @@ namespace shiny {
             client_.write((const uint8_t*)head, (size_t)len);
 
             char line[48];
-            if (!readLine(line, sizeof(line))) {
+            if (!readLine(client_, line, sizeof(line))) {
                 status_ = kErrTimeout;
                 return;
             }
@@ -51,7 +51,7 @@ namespace shiny {
             }
             status_ = atoi(line + 9);
 
-            while (readLine(line, sizeof(line)) && line[0]) {
+            while (readLine(client_, line, sizeof(line)) && line[0]) {
                 if (strncasecmp_P(line, PSTR("content-length:"), 15) == 0) remaining_ = atol(line + 15);
             }
         }
@@ -59,27 +59,27 @@ namespace shiny {
         int Request::read() {
             if (status_ < 0 || remaining_ == 0) return -1;
 
-            const int c = timedRead();
+            const int c = timedRead(client_);
             if (c >= 0 && remaining_ > 0) --remaining_;
 
             return c;
         }
 
-        int Request::timedRead() {
+        int timedRead(Client& client) {
             const unsigned long start = millis();
             while (millis() - start < HTTP_TIMEOUT_MS) {
-                const int c = client_.read();
+                const int c = client.read();
                 if (c >= 0) return c;
-                if (!client_.connected()) return -1;
+                if (!client.connected()) return -1;
             }
 
             return -1;
         }
 
-        bool Request::readLine(char* buf, size_t len) {
+        bool readLine(Client& client, char* buf, size_t len) {
             size_t used = 0;
             for (;;) {
-                const int c = timedRead();
+                const int c = timedRead(client);
                 if (c < 0) {
                     buf[used] = '\0';
                     return false;

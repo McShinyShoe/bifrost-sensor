@@ -20,6 +20,8 @@
 #define HTTP_TIMEOUT_MS 2000UL
 #define AC_POLL_INTERVAL_MS 1000UL
 
+#define WEBHOOK_PORT 80
+
 #define DHT_GND_PIN 40
 #define DHT_PIN 38
 #define DHT_VCC_PIN 36
