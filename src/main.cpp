@@ -10,6 +10,7 @@
 #include "sensor.h"
 #include "ac.h"
 #include "ac_commands.h"
+#include "ac_queue.h"
 #include "config.h"
 
 void handleSensorUpdate(float humidity, float temperature);
@@ -47,6 +48,7 @@ void loop() {
     shiny::screen.update();
     shiny::ac::remote.poll();
     handleSerial();
+    shiny::ac::pollQueue();
     unsigned long mls = millis();
     if(mls - lastRun >= 1000) {
         lastRun = mls;
