@@ -106,6 +106,7 @@ namespace shiny {
 
           bool sendPowerOn();
           bool sendPowerOff();
+          void togglePower();
 
           bool setTemperature(uint8_t celsius);
           bool setMode(Mode mode);

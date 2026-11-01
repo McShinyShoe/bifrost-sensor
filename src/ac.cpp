@@ -219,6 +219,12 @@ namespace shiny {
             return true;
         }
 
+        void Unit::togglePower() {
+            state_.power = !state_.power;
+            clearOnPowerSwitch();
+            transmit(signal(Button::Power));
+        }
+
         bool Unit::setTemperature(uint8_t celsius) {
             if (celsius < Settings::kMinCelsius || celsius > Settings::kMaxCelsius) return false;
 
